@@ -9,24 +9,30 @@ on:
 
 jobs:
   build:
+    # بيئة Ubuntu Linux
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       # 🛠️ الخطوة الجديدة: تثبيت Buildozer والمتطلبات يدوياً
+      # هذا يتجاوز مشاكل الأذونات (chown) التي ظهرت
       - name: Install Buildozer and Dependencies
         run: |
+          echo "Starting Manual Setup..."
+          
           # تثبيت متطلبات النظام الأساسية (Java, NDK, إلخ)
           sudo apt update
           sudo apt install -y git build-essential zlib1g-dev libncurses5-dev libffi-dev libssl-dev python3 python3-pip python3-setuptools
-          pip3 install --upgrade pip buildozer
+          
+          # تثبيت Buildozer في البيئة
+          pip3 install --upgrade pip
+          pip3 install buildozer
 
       # 📦 الخطوة الجديدة: تجميع التطبيق
       - name: Run Buildozer
-        run: |
-          # يجب أن تكون متطلبات المشروع (requirements) في buildozer.spec صحيحة
-          buildozer android debug
+        # Run -c means clean first time build
+        run: buildozer android debug
 
       # ⬆️ رفع الـ APK
       - name: Upload Artifact
