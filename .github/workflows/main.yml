@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Buildozer Environment
-        # *** هذا هو الإجراء الصحيح البديل ***
+        # *** هذا هو الإجراء الصحيح البديل الذي يعمل حاليًا ***
         uses: ArtemSBulgakov/buildozer-action@v1
         with:
           command: buildozer android debug
