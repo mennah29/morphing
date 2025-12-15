@@ -14,20 +14,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 🛠️ الخطوة الأولى: تثبيت Buildozer والمتطلبات يدوياً
+      # 🛠️ الخطوة 1: تثبيت Buildozer والمتطلبات يدوياً
       - name: Install Buildozer and Dependencies
         run: |
           echo "Starting Manual Setup..."
           
-          # تثبيت متطلبات النظام الأساسية (Java, NDK, إلخ)
+          # تثبيت متطلبات النظام الأساسية
           sudo apt update
           sudo apt install -y git build-essential zlib1g-dev libncurses5-dev libffi-dev libssl-dev python3 python3-pip python3-setuptools
           
-          # تثبيت Buildozer في البيئة
+          # تثبيت Buildozer و Cython (لحزمة Kivy/MediaPipe)
           pip3 install --upgrade pip
-          pip3 install buildozer
+          pip3 install buildozer cython  # 🚨 Cython تمت إضافته هنا
 
-      # 📦 الخطوة الثانية: حل مشكلة الملف المفقود وبدء التجميع
+      # 📦 الخطوة 2: حل مشكلة الملف المفقود وبدء التجميع
       - name: Run Buildozer
         run: |
           # 🚨 حل خطأ "No buildozer.spec found"
@@ -35,7 +35,7 @@ jobs:
           # بدء البناء
           buildozer android debug
 
-      # ⬆️ الخطوة الثالثة: رفع الـ APK
+      # ⬆️ الخطوة 3: رفع الـ APK
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
