@@ -1,25 +1,32 @@
 name: Buildozer Android Build
 
 on:
+  # هذا السطر يخبر GitHub بتشغيل البناء عند رفع كود جديد إلى الفرع الرئيسي
   push:
     branches:
       - main
       - master
+  # هذا السطر يسمح لك بتشغيل البناء يدوياً من واجهة GitHub
   workflow_dispatch:
 
 jobs:
   build:
+    # سيتم تشغيل البناء على بيئة Linux (Ubuntu)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
+        # الإجراء القياسي لسحب الكود من المستودع
         uses: actions/checkout@v4
 
       - name: Set up Buildozer Environment
-        uses: alirezadir/buildozer-action@v2
+        # الإجراء الصحيح الذي يقوم بتثبيت Buildozer و SDK و NDK
+        uses: ArtemSBulgakov/buildozer-action@v1
         with:
+          # الأمر الذي سيتم تشغيله داخل بيئة البناء
           command: buildozer android debug
 
       - name: Upload Artifact
+        # عند اكتمال البناء، هذا الإجراء يرفع ملف APK الناتج
         uses: actions/upload-artifact@v4
         with:
           name: android-debug-apk
