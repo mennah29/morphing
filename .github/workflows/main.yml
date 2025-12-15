@@ -9,14 +9,12 @@ on:
 
 jobs:
   build:
-    # بيئة Ubuntu Linux
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 🛠️ الخطوة الجديدة: تثبيت Buildozer والمتطلبات يدوياً
-      # هذا يتجاوز مشاكل الأذونات (chown) التي ظهرت
+      # 🛠️ الخطوة الأولى: تثبيت Buildozer والمتطلبات يدوياً
       - name: Install Buildozer and Dependencies
         run: |
           echo "Starting Manual Setup..."
@@ -29,12 +27,15 @@ jobs:
           pip3 install --upgrade pip
           pip3 install buildozer
 
-      # 📦 الخطوة الجديدة: تجميع التطبيق
+      # 📦 الخطوة الثانية: حل مشكلة الملف المفقود وبدء التجميع
       - name: Run Buildozer
-        # Run -c means clean first time build
-        run: buildozer android debug
+        run: |
+          # 🚨 حل خطأ "No buildozer.spec found"
+          buildozer init
+          # بدء البناء
+          buildozer android debug
 
-      # ⬆️ رفع الـ APK
+      # ⬆️ الخطوة الثالثة: رفع الـ APK
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
