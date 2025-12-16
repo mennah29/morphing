@@ -1,33 +1,19 @@
-name: Buildozer Android Build
-
-on:
-  push:
-    branches:
-      - main
-      - master
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
+# ... تكملة من الخطوة السابقة (Install Buildozer) ...
       - name: Install Buildozer and Dependencies
         run: |
-          sudo apt update
-          sudo apt install -y git build-essential zlib1g-dev libncurses5-dev libffi-dev libssl-dev python3 python3-pip python3-setuptools
-          pip3 install --upgrade pip
+          # ... (باقي أوامر التثبيت) ...
           pip3 install buildozer cython
 
+      # 🚨 الخطوة الجديدة: قبول تراخيص Android SDK 🚨
+      - name: Accept SDK Licenses
+        run: |
+          # هذا الأمر يجبر Buildozer على الموافقة على جميع التراخيص المطلوبة
+          buildozer android update
+
+      # 📦 الخطوة التالية: حل مشكلة الملف المفقود وبدء التجميع
       - name: Run Buildozer
         run: |
           buildozer init
           buildozer android debug
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-debug-apk
-          path: bin/*.apk
+      # ... (باقي الكود) ...
